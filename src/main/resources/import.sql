@@ -1,0 +1,3 @@
+INSERT INTO ROLE (ROLE_NAME) VALUES ('USER'), ('ADMIN');
+
+INSERT INTO USER (USERNAME, PASSWORD, IMAGE_URL, ROLE_ID) VALUES ('user', '$2a$12$P4p0RF7RBJCbWBSBl0U5WuKdllHtr9s.pZitZYVG59ueO/ZllL7wK', 'https://res.cloudinary.com/dzqzvykhl/image/upload/v1721170045/lhh7dzq92bsfnahwcy7g.jpg', 1), ('admin', '$2a$12$P4p0RF7RBJCbWBSBl0U5WuKdllHtr9s.pZitZYVG59ueO/ZllL7wK', 'https://res.cloudinary.com/dzqzvykhl/image/upload/v1721170045/lhh7dzq92bsfnahwcy7g.jpg', 2);
