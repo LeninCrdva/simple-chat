@@ -1,30 +1,39 @@
 package tec.edu.azuay.chat.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
-import tec.edu.azuay.chat.models.dto.Message;
+import org.springframework.web.bind.annotation.*;
+import tec.edu.azuay.chat.models.dto.MessageRequest;
+import tec.edu.azuay.chat.service.interfaces.IMessageService;
 
 @RestController
+@RequestMapping("/messages")
 @RequiredArgsConstructor
 public class MessageController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/application")
-    @SendTo("/all/messages")
-    public Message sendMessage(final Message message) throws Exception {
-        System.out.println("Message sent: " + message.getText());
-        return message;
+    private final IMessageService messageService;
+
+    @GetMapping("/messages")
+    public ResponseEntity<?> getMessageByChatId(@RequestParam Long chatId) {
+        return ResponseEntity.ok(messageService.getMessages(chatId));
     }
 
-    @MessageMapping("/private")
-    public void sendToSpecificUser(@Payload Message message) {
-        System.out.println("Message sent to specific user named:" + message.getTo() + " and the message is: "+ message.getText());
-        simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/specific", message);
+    @MessageMapping("/application")
+    @SendTo("/all/messages")
+    public MessageRequest sendMessage(final MessageRequest messageResponse) {
+        return messageResponse;
+    }
+
+    @PostMapping("/private")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendToSpecificUser(@RequestBody MessageRequest messageResponse) {
+
+        messageService.saveMessage(messageResponse);
     }
 }

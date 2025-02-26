@@ -9,9 +9,13 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Message implements Serializable {
+public class MessageRequest implements Serializable {
 
-    private String text;
+    private String sender;
 
-    private String to;
+    private Long chat;
+
+    private String content;
+
+    private String type;
 }

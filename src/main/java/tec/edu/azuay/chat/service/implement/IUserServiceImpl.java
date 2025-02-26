@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tec.edu.azuay.chat.exceptions.ExistsObjectException;
+import tec.edu.azuay.chat.exceptions.ObjectNotFoundException;
 import tec.edu.azuay.chat.models.dto.AuthenticationResponse;
 import tec.edu.azuay.chat.models.dto.UserRequest;
+import tec.edu.azuay.chat.models.dto.UserResponse;
 import tec.edu.azuay.chat.models.entity.User;
 import tec.edu.azuay.chat.repository.IUserRepository;
 import tec.edu.azuay.chat.service.interfaces.IUserService;
@@ -33,8 +35,12 @@ public class IUserServiceImpl implements IUserService {
         return modelMapper.map(request, User.class);
     }
 
-    private AuthenticationResponse entityToDto(User user) {
+    private AuthenticationResponse entityToAuthResponse(User user) {
         return modelMapper.map(user, AuthenticationResponse.class);
+    }
+
+    private UserResponse entityToDto(User user) {
+        return modelMapper.map(user, UserResponse.class);
     }
 
     @Override
@@ -58,5 +64,10 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public Optional<User> findOneByUsername(String username) {
         return userRepository.findOneByUsername(username);
+    }
+
+    @Override
+    public UserResponse getUserResponse(String username) {
+        return entityToDto(findOneByUsername(username).orElseThrow(ObjectNotFoundException::new));
     }
 }

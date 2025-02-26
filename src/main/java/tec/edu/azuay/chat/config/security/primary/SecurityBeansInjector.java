@@ -42,9 +42,7 @@ public class SecurityBeansInjector {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return (username) -> {
-            return userRepository.findOneByUsername(username)
-                    .orElseThrow(() -> new ObjectNotFoundException("User not found with user " + username));
-        };
+        return (username) -> userRepository.findOneByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException("User not found with user " + username));
     }
 }

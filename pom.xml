@@ -31,6 +31,7 @@
         <jjwt.version>0.12.3</jjwt.version>
         <modelmapper.version>3.2.0</modelmapper.version>
         <cloudinary.imageio.version>1.38.0</cloudinary.imageio.version>
+        <swagger.ui.version>2.0.3</swagger.ui.version>
     </properties>
     <dependencies>
         <dependency>
@@ -102,6 +103,11 @@
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http45</artifactId>
             <version>${cloudinary.imageio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${swagger.ui.version}</version>
         </dependency>
     </dependencies>
 

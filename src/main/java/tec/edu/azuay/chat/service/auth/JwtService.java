@@ -18,9 +18,27 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails user) {
+    /*
+     * 30 minutes
+     */
+    private static final Long ACCESS_TOKEN_EXPIRATION = 1000L * 60 * 30;
+
+    /*
+     * 30 days
+     */
+    private static final Long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 60 * 24 * 30;
+
+    public String getAccessToken(UserDetails user, Map<String, Object> extraClaims) {
+        return generateToken(extraClaims, user, ACCESS_TOKEN_EXPIRATION);
+    }
+
+    public String getRefreshToken(UserDetails user, Map<String, Object> extraClaims) {
+        return generateToken(extraClaims, user, REFRESH_TOKEN_EXPIRATION);
+    }
+
+    public String generateToken(Map<String, Object> extraClaims, UserDetails user, Long expiration) {
         Date issuedAt = new Date(System.currentTimeMillis());
-        Date expirationAt = new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 3);
+        Date expirationAt = new Date(System.currentTimeMillis() + expiration);
 
         return Jwts.builder()
                 .header()
@@ -40,6 +58,10 @@ public class JwtService {
         byte [] passwordDecoded = Decoders.BASE64.decode(SECRET_KEY);
 
         return Keys.hmacShaKeyFor(passwordDecoded);
+    }
+
+    public Integer extractUserId(String jwt) {
+        return (Integer) extractAllClaims(jwt).get("userId");
     }
 
     public String extractUsername(String jwt) {

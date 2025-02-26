@@ -22,7 +22,13 @@ public class ImageUploadService {
     public Map<?, ?> upload(MultipartFile multipartFile) {
         try {
             File file = convert(multipartFile);
-            Map<?, ?> result = cloudinary.uploader().upload(file, ObjectUtils.asMap("folder", "simple-chat", "resource_type", "image"));
+            Map<?, ?> result = cloudinary.uploader().upload(file,
+                    ObjectUtils.asMap(
+                            "folder", "simple-chat",
+                            "resource_type", "image",
+                            "format", "webp"
+                    )
+            );
 
             if (!Files.deleteIfExists(file.toPath())) {
                 throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());

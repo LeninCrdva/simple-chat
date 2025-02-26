@@ -14,6 +14,6 @@ public class SimpleChatProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Hello World");
+        System.out.println("Init Simple Chat Project - Success");
     }
 }
